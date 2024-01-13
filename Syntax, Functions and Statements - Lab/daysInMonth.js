@@ -1,12 +1,10 @@
 function daysInMonth(month, year){
 let a = new Date(year, month);
-a.setDate()
+a.setDate(0)
 
-a.getDate()
-
-console.log(a);
+console.log(a.getDate());
 
 }
 
 daysInMonth(1, 2012);
-//daysInMonth(2, 2021);
+daysInMonth(2, 2021);
