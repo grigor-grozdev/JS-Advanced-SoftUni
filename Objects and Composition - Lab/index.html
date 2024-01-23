@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FromJSONToHTMLTable</title>
+    <style>
+        table,
+        th {
+            border: groove;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid black;
+        }
+
+        td,
+        th {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+    </div>
+    <script>
+        function fromJSONToHTMLTable(input) {
+
+
+            let arr = JSON.parse(input);
+
+            let outputArr = ["<table>"];
+
+            outputArr.push(makeKeyRow(arr));
+
+            arr.forEach((obj) => outputArr.push(makeValueRow(obj)));
+
+            outputArr.push("</table>");
+
+            function makeKeyRow(arr) {
+                let keys = Object.keys(arr[0]);
+
+                let result = `<tr>`;
+                for (let key of keys) {
+                    result += `<th>${escapeHtml(key)}</th>`;
+                }
+                result += `</tr>`;
+
+                return result;
+            }
+            function makeValueRow(obj) {
+
+                let values = Object.values(obj);
+                let result = `<tr>`;
+                for (let value of values) {
+                    result += `<td>${escapeHtml(value)}</td>`
+                };
+                result += `</tr>`;
+
+                return result;
+            };
+            function escapeHtml(value) {
+                let entityMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
+                return str.replace(/[&<>"'\/]/g, (s) => entityMap[s]);
+            };
+            console.log(outputArr.join('\n'));
+        }
+        window.onload = function () {
+            let container = document.getElementById('wrapper');
+            container.innerHTML = fromJSONToHTMLTable(['[{"Name":"Stamat","Price":5.5},{"Name":"Rumen","Price":6}]']);
+        };
+    </script>
+</body>
+
+</html>
